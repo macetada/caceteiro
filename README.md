@@ -16,22 +16,9 @@ docker-compose up -d
 ## Macetando os servers
 
 ```bash
-export HOST="172.17.0.1" # ou HOST=seu-dominio.com
-export SERVERS="8080;8081;8082;8083;8084;8085"
-export CLIENTS=100
-export REQUESTS=10000
-export SLEEP=5
-```
-
-```bash
 docker pull ghcr.io/macetada/caceteiro:main
-docker run --rm -t \
-  -e HOST=${HOST} \
-  -e SERVERS=${SERVERS} \
-  -e CLIENTS=${CLIENTS} \
-  -e REQUESTS=${REQUESTS} \
-  -e SLEEP=${SLEEP} \
-  ghcr.io/macetada/caceteiro:main
+docker run --rm -t ghcr.io/macetada/caceteiro:main -- \
+  http://172.17.0.1:8080 -c 100 -r 10000 -p wrk
 ```
 
 ou:
@@ -40,13 +27,7 @@ ou:
 git clone https://github.com/macetada/caceteiro.git
 cd caceteiro/
 docker build -t ab-wrk .
-docker run --rm -t \
-  -e HOST=${HOST} \
-  -e SERVERS=${SERVERS} \
-  -e CLIENTS=${CLIENTS} \
-  -e REQUESTS=${REQUESTS} \
-  -e SLEEP=${SLEEP} \
-  ab-wrk
+docker run --rm -t ab-wrk -- http://172.17.0.1:8080 -c 100 -r 10000 -p wrk
 ```
 
 > Este procedimento deve ser feito numa máquina client com razoável poder de processamento.
